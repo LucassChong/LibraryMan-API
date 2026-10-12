@@ -6,26 +6,20 @@ on:
 jobs:
   check_pr_description:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Check PR Description
         id: check_pr_description
+        env:
+          PR_DESCRIPTION: ${{ github.event.pull_request.body }}
         run: |
-          PR_DESCRIPTION="${{ github.event.pull_request.body }}"
           if [[ -z "$PR_DESCRIPTION" ]]; then
             echo "PR description is missing."
             exit 1
           fi
 
-          if [[ ! "$PR_DESCRIPTION" =~ Fixes\ #[0-9]+ ]]; then
-            echo "##[error]PR description must include 'Fixes #<number>' (for example: 'Fixes #123')."
+          if [[ ! "$PR_DESCRIPTION" =~ Fixes\\ #[0-9]+ ]]; then
+            echo "PR description must include 'Fixes #<number>' (for example: 'Fixes #123')." >&2
             exit 1
           fi
 
           echo "PR description is valid."
-
-      - name: Output result
-        run: echo "All checks passed."

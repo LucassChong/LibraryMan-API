@@ -17,7 +17,7 @@ jobs:
             exit 1
           fi
 
-          if [[ ! "$PR_DESCRIPTION" =~ Fixes\\ #[0-9]+ ]]; then
+          if [[ ! "$PR_DESCRIPTION" =~ Fixes[[:space:]]#[0-9]+ ]]; then
             echo "PR description must include 'Fixes #<number>' (for example: 'Fixes #123')." >&2
             exit 1
           fi
